@@ -1,0 +1,145 @@
+<?php
+
+namespace MicroweberPackages\Option\tests;
+
+use PHPUnit\Framework\Attributes\Test;
+
+use Tests\TestCase;
+use MicroweberPackages\Option\Facades\Option as OptionFacade;
+use MicroweberPackages\Option\Models\Option;
+
+class OptionsTest extends TestCase
+{
+    #[Test]
+    public function it_options(): void {
+        $data = array();
+        $now = date('YmdHis');
+        $data['option_value'] = $now;
+        $data['option_key'] = 'a_test';
+        $data['option_group'] = 'test';
+        $save = save_option($data);
+
+        $get = get_option('a_test', 'test'); // if this broke maybe you dont destroy MEMORY variable in Class when save OPTION
+
+        $this->assertEquals($now, $get);
+
+        $options = OptionFacade::getValue('a_test', 'test'); // static
+        $this->assertEquals($now, $options);
+
+        $option = new Option();
+        $options = $option->getValue('a_test', 'test'); //instance
+        $this->assertEquals($now, $options);
+    }
+
+    #[Test]
+
+    public function it_options_with_numeric_key(): void {
+        $data = array();
+        $now = rand(1, 9999999);
+        $option_group = rand(1, 9999999);
+        $option_key = rand(1, 9999999);
+        $data['option_value'] = $now;
+        $data['option_key'] = $option_key;
+        $data['option_group'] = $option_group;
+        $save = save_option($data);
+
+        $get = get_option($option_key, $option_group); // if this broke maybe you dont destroy MEMORY variable in Class when save OPTION
+
+        $this->assertEquals($now, $get);
+
+        $options = OptionFacade::getValue($option_key, $option_group); // static
+        $this->assertEquals($now, $options);
+
+        $option = new Option();
+        $options = $option->getValue($option_key, $option_group); //instance
+        $this->assertEquals($now, $options);
+
+    }
+
+    #[Test]
+
+    public function it_options_save_with_parse_string(): void {
+        $now = date('YmdHis');
+        $str = "option_key=" . $now . "&option_group=test&option_value=test2";
+        $save = save_option($str);
+        $get = get_option($now, 'test');
+        $this->assertEquals('test2', $get);
+
+
+        //test numeric key
+        $now = rand(1, 9999999);
+        $str = "option_key=" . $now . "&option_group=test&option_value=test2";
+        $save = save_option($str);
+        $get = get_option($now, 'test');
+        $this->assertEquals('test2', $get);
+    }
+
+
+    #[Test]
+
+
+    public function it_options_manager_class(): void {
+
+
+        $data = array();
+        $now = date('YmdHis');
+        $data['option_value'] = $now;
+        $data['option_key'] = 'test_option_website_group';
+        $data['option_group'] = 'website';
+        $save = app()->option_manager->save($data);
+
+
+        // test get and save
+        $data = array();
+        $now = date('YmdHis');
+        $data['option_value'] = $now;
+        $data['option_key'] = 'z_test';
+        $data['option_group'] = 'ztest';
+        $save = app()->option_manager->save($data);
+        $get = app()->option_manager->get('z_test', 'ztest');
+        $this->assertEquals($now, $get);
+
+
+        // test other functions
+        //  $groups = app()->option_manager->get_groups(true);
+        $groups2 = app()->option_manager->get_groups();
+
+
+        $delete = app()->option_manager->delete('z_test', 'ztest');
+
+        $get = app()->option_manager->get('z_test', 'ztest'); // if this broke maybe you dont destroy MEMORY variable in Class when delete OPTION
+
+        //  $this->assertTrue(in_array('website',$groups));
+        $this->assertTrue(in_array('ztest', $groups2));
+        $this->assertTrue($delete);
+        $this->assertTrue(empty($get));
+
+
+    }
+
+
+    #[Test]
+
+
+    public function it_module_option_default_return(): void {
+
+        $optionKey = 'test_option_website_group_testModuleOptionDefaultReturn';
+        $optionGroup = 'website';
+        $optionGroupNonExistent = 'website' . rand(1, 9999999);
+        $data = array();
+        $now = date('YmdHis');
+        $data['option_value'] = $now;
+        $data['option_key'] = $optionKey;
+        $data['option_group'] = $optionGroup;
+        $save = app()->option_manager->save($data);
+
+
+        $get = module_option($optionGroup, $optionKey);
+
+        $this->assertEquals($now, $get);
+
+        $get = module_option($optionGroupNonExistent, $optionKey, $now);
+        $this->assertEquals($now, $get);
+
+    }
+}

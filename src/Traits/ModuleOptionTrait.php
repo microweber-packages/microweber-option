@@ -1,0 +1,68 @@
+<?php
+
+namespace MicroweberPackages\Option\Traits;
+
+use MicroweberPackages\Option\Models\ModuleOption;
+
+trait ModuleOptionTrait
+{
+
+    public $memoryModuleOptionGroup = [];
+
+    public function getModuleOptions($optionGroup, $module = false)
+    {
+        if (!$module and isset($this->memoryModuleOptionGroup[$optionGroup])) {
+            return $this->memoryModuleOptionGroup[$optionGroup];
+        }
+
+        try {
+
+            if ($optionGroup) {
+
+                $allOptions = ModuleOption::where('option_group', $optionGroup);
+
+                if ($module) {
+                    $allOptions->where('module', $module);
+                }
+
+                $allOptions = $allOptions->get()->toArray();
+                if (!$module) {
+                    $this->memoryModuleOptionGroup[$optionGroup] = $allOptions;
+                }
+                return $allOptions;
+            }
+
+
+        } catch (\Exception $e) {
+            return false;
+        }
+
+
+
+
+
+
+        return false;
+    }
+
+    public function getModuleOption($optionKey, $optionGroup, $returnFull,$module = false)
+    {
+        if (isset($this->memoryModuleOptionGroup[$optionGroup])) {
+            return $this->getOptionFromOptionsArray($optionKey, $this->memoryModuleOptionGroup[$optionGroup], $returnFull);
+        }
+
+        if ($optionGroup) {
+
+            $allOptions = ModuleOption::where('option_group', $optionGroup);
+            if($module){
+                $allOptions->where('module', $module);
+            }
+            $allOptions = $allOptions->get()->toArray();
+
+            $this->memoryModuleOptionGroup[$optionGroup] = $allOptions;
+            return $this->getOptionFromOptionsArray($optionKey, $allOptions, $returnFull);
+        }
+
+        return false;
+    }
+}

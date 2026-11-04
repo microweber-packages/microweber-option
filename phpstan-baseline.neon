@@ -1,1 +1,109 @@
 parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$option_manager\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Console/Commands/OptionCommand.php
+
+		-
+			message: '#^Function get_modules_from_db not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: src/Http/Controllers/Api/SaveOptionApiController.php
+
+		-
+			message: '#^Function xss_clean not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: src/Http/Controllers/Api/SaveOptionApiController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$lang_helper\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/OptionManager.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$option_repository\.$#'
+			identifier: property.notFound
+			count: 5
+			path: src/OptionManager.php
+
+		-
+			message: '#^Call to an undefined method MicroweberPackages\\Option\\Models\\Option\:\:select\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/OptionManager.php
+
+		-
+			message: '#^Call to an undefined static method MicroweberPackages\\Option\\Models\\ModuleOption\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 4
+			path: src/OptionManager.php
+
+		-
+			message: '#^Call to an undefined static method MicroweberPackages\\Option\\Models\\Option\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: src/OptionManager.php
+
+		-
+			message: '#^Call to static method table\(\) on an unknown class DB\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/OptionManager.php
+
+		-
+			message: '#^Call to static method tags\(\) on an unknown class Cache\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/OptionManager.php
+
+		-
+			message: '#^Function mw not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: src/OptionManager.php
+
+		-
+			message: '#^Function mw_is_installed not found\.$#'
+			identifier: function.notFound
+			count: 3
+			path: src/OptionManager.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$translate_manager\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Providers/OptionServiceProvider.php
+
+		-
+			message: '#^Function mw_is_installed not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: src/Repositories/OptionRepository.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$lang_helper\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/helpers/options.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$option_manager\.$#'
+			identifier: property.notFound
+			count: 6
+			path: src/helpers/options.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Foundation\\Application\:\:\$option_repository\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/helpers/options.php
+
+		-
+			message: '#^Variable \$getAllOldOptions in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: src/migrations/2023_12_24_000000_migrate_background_image_module_options.php
